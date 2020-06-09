@@ -1,0 +1,10 @@
+.comparision{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(19rem,1fr));
+}
+.comparision_details{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(19rem,1fr));
+    width: 70vw;
+    margin-left: 15rem;
+}

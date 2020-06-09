@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loader.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <title>Covid-19 Tracker</title>
+  </head>
+  <body>
+    <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    <header class="hello">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/myLogo.png') }}" alt="" />
+        <p>COVID-19 <br />STATISTICS</p>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href=".">HOME</a></li>
+          <li><a href="#statis">Chart</a></li>
+          <li><a href="#map">Global Map</a></li>
+          <li><a href="#comp">Comparision</a></li>
+
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main" class="hide">
+      <div id="statis" class="stats">
+        <div class="latest-report">
+          <div class="country">
+            <div class="name">Loading ...</div>
+            <div class="change-country">change</div>
+            <div class="search-country hide">
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="search-input"
+                  placeholder="Search Country ..."
+                />
+                <img src="{{ url_for('static', filename='img/close.svg') }}" class="close" alt="" />
+              </div>
+              <div class="country-list"></div>
+            </div>
+          </div>
+          <div class="total-cases">
+            <div class="title">Total Cases</div>
+            <div class="value">0</div>
+            <div class="new-value">+0</div>
+          </div>
+          <div class="danger-rank">
+            <div class="title">Danger Rank</div>
+            <div class="value">0</div>
+          </div>
+          <div class="critical-cases">
+            <div class="title">Critical Cases</div>
+            <div class="value">0</div>
+          </div>
+          <div class="recovered">
+            <div class="title">Recovered</div>
+            <div class="value">0</div>
+            <div class="new-value">+0</div>
+          </div>
+          <div class="deaths">
+            <div class="title">Deaths</div>
+            <div class="value">0</div>
+            <div class="new-value">+0</div>
+          </div>
+        </div>
+        <div class="chart">
+          <canvas id="axes_line_chart"> </canvas>
+        </div>
+      </div>
+
+    <section class="text-center">
+      <h2 class="timeline-header__title" style="color: black;">World Map</h2>
+    </section>
+    <section style="width: 100%;">
+      <div id="map" style="max-width: 100vw; height: 100vh;"></div>
+    </section>
+
+    <section  class="text-center">
+      <h2  class="timeline-header__title" style="color: black;">Make Your Comparision</h2>
+    </section>
+    <div class="comp_button">
+      <button id="clk_compare" class="btn_hello" onclick="clickCompare()">Compare</button>
+    </div>
+    <div class="divider"></div>
+    <section id="comp" class="comparision" >
+        <div class="searchOne compare_class" >
+          <div class="country">
+            <div class="nameOne">Select Your Country</div>
+            <div class="change-country_one">change</div>
+            <div class="search-country_one hide">
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="search-input_one"
+                  placeholder="Search Country ..."
+                />
+                <img src="/img/close.svg" class="close_one" alt="" />
+              </div>
+              <div class="country-list_one"></div>
+            </div>
+          </div>
+        </div>
+        <div class="searchTwo" >
+          <div class="country" style="margin-left: 10px;">
+            <div class="nameTwo">Select Your Country</div>
+            <div class="change-country_two">change</div>
+            <div class="search-country_two hide">
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="search-input_two"
+                  placeholder="Search Country ..."
+                />
+                <img src="/img/close.svg" class="close_two" alt="" />
+              </div>
+              <div class="country-list_two"></div>
+            </div>
+          </div>
+        </div>
+
+    </section>
+
+
+
+
+    <div class="comparision_details hide">
+      <div class="detailsOne">
+
+      </div>
+      <div class="detailsTwo">
+
+      </div>
+      <div class="detailsThree">
+
+      </div>
+    </div>
+    <div class="comparision_details_two hide" style="margin-top: 40px;">
+      <div>
+        <canvas id="axes_line_chart_two"> </canvas>
+          <br>
+        <br>
+        <hr>
+        <p style="text-align: center;"><strong>Please Note : The active cases , daily new cases and deaths can only be visiable after the regrading country administration reveals these criteria otherwise it will define as 0.</strong>
+        </p>
+      </div>
+    </div>
+    <div class="comp_button" style="margin-top: 30px;">
+      <button id="clk_clear" class="btn_hello hide" onclick="clickCompare()">Again</button>
+    </div>
+  </main>
+    <footer>
+      <div class="footer-container">
+        <div class="copyright">
+          <p>
+            Copyright &copy 2020 By Debashis Gupta
+          </p>
+<p style="font-size: 5px;">Disclaimer: All informations have been gathered from different sources. For any falsify the creator is not responsible </p>
+        </div>
+
+      </div>
+    </footer>
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    $(window).on("load",function(){
+      $(".loader-wrapper").fadeOut("slow");
+      $("#main").removeClass('hide');
+      // const main = document.getElementById("main");
+
+    })
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+  <script
+    language="JavaScript"
+    src="http://www.geoplugin.net/javascript.gp"
+    type="text/javascript"
+  ></script>
+  <!-- <script src="/js/countries.js"></script> -->
+  <script src="{{ url_for('static', filename='js/sameCountry.js') }}"></script>
+  <!-- <script src="/js/try.js"></script> -->
+  <!-- <script src="/js/app.js"></script> -->
+  <script src="https://unpkg.com/es6-promise@4.2.4/dist/es6-promise.auto.min.js"></script>
+  <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+  <script src="{{ url_for('static', filename='js/mapbox.js') }}"></script>
+
+  <!-- <script src="js/fixup.js"></script> -->
+  <script src="{{ url_for('static', filename='js/ajax.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/comparision.js') }}"></script>
+  <!-- <script src="js/name.js"></script> -->
+</html>
